@@ -11,7 +11,7 @@ generate_volatility_surface <- function(strike_prices, time_to_maturity) {
   return(implied_volatility)
 }
 
-# strik og matiruty
+# strike og maturity
 strike_prices <- seq(80, 120, by = 2)
 time_to_maturity <- seq(0.1, 2, by = 0.1)
 
