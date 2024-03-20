@@ -1,9 +1,9 @@
 library(jsonlite)
-APIstock <- "https://api.polygon.io/v2/aggs/ticker/O:SPY221104C00"
+APIstock <- "https://api.polygon.io/v2/aggs/ticker/O:AAPL221104C00"
 APItid <- "/range/1/minute/2022-10-04/2022-11-03?adjusted=true&sort=asc&limit=50000&api"
 APIkey <- "Key=CBQouP6k8C92g2XWhofZB5PCGgxI6lOk"
 
-startprice <- 349
+startprice <- 150
 
 API<- paste(APIstock,as.character(as.integer(startprice*1000)),APItid, APIkey, sep = "")
 raw <- jsonlite::fromJSON(API)
