@@ -1,0 +1,30 @@
+---
+title: "P8 - Data gathering"
+author: "Laust Visby Andreasen"
+date: "2024-03-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(jsonlite)
+```
+
+```{r}
+APIstock <- "https://api.polygon.io/v2/aggs/ticker/O:SPXW221104C00"
+APItid <- "/range/1/minute/2022-10-04/2022-11-03?adjusted=true&sort=asc&limit=50000&api"
+APIkey <- "Key=CBQouP6k8C92g2XWhofZB5PCGgxI6lOk"
+startprice <- 100
+```
+
+
+```{r}
+API<- paste(APIstock,as.character(as.integer(startprice*1000)),APItid, APIkey, sep = "")
+raw <- jsonlite::fromJSON(API)
+
+vw <- raw$results$vw
+t <- raw$results$t
+assign(paste0("df", startprice), data.frame(vw,t))
+startprice <- startprice + 1
+```
+
