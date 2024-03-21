@@ -8,10 +8,11 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(jsonlite)
+library(tidyverse)
 ```
 
 ```{r}
-APIstock <- "https://api.polygon.io/v2/aggs/ticker/O:SPXW221104C00"
+APIstock <- "https://api.polygon.io/v2/aggs/ticker/O:AAPL221104C00"
 APItid <- "/range/1/minute/2022-10-04/2022-11-03?adjusted=true&sort=asc&limit=50000&api"
 APIkey <- "Key=CBQouP6k8C92g2XWhofZB5PCGgxI6lOk"
 startprice <- 100
@@ -26,5 +27,29 @@ vw <- raw$results$vw
 t <- raw$results$t
 assign(paste0("df", startprice), data.frame(vw,t))
 startprice <- startprice + 1
+```
+
+```{r}
+df_list <- list(df100, df105, df110, df115, df120, df125, df126, df127, df128, df129, df130, df131, df132, df133, df134, df135, df136, df137, df138, df139, df140, df141, df142, df143, df144, df145, df146, df147, df148, df149, df150, df155, df160, df165, df170, df175, df180, df185, df190, df195, df200)
+```
+
+```{r}
+df <- Reduce(function(x,y) merge(x,y, all = TRUE, by = "t"), df_list)
+```
+
+```{r}
+K_list <- list("K100", "K105", "K110", "K115", "K120", "K125", "K126", "K127", "K128", "K129", "K130", "K131", "K132", "K133", "K134", "K135", "K136", "K137", "K138", "K139", "K140", "K141", "K142", "K143", "K144", "K145", "K146", "K147", "K148", "K149", "K150", "K155", "K160", "K165", "K170", "K175", "K180", "K185", "K190", "K195", "K200")
+```
+
+
+```{r}
+for (i in 1:length(K_list)) {
+  colnames(df)[i+1] <- K_list[i]
+}
+```
+
+
+```{r}
+write.csv(df, "CallApple.csv")
 ```
 
