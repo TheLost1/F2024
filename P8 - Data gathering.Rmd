@@ -53,3 +53,55 @@ for (i in 1:length(K_list)) {
 write.csv(df, "CallApple.csv")
 ```
 
+hent call filen
+```{r}
+#call <- read.csv("/Users/christiantaulbjerg/Documents/GitHub/F2024/CallApple.csv")
+call <- read.csv("C:\\Users\\Bruger\\Desktop\\F2024\\CallApple.csv")
+```
+
+
+STOCK
+```{r}
+SAPI <- "https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/minute/2022-10-04/2022-11-03?adjusted=true&sort=asc&limit=50000&apiKey=CBQouP6k8C92g2XWhofZB5PCGgxI6lOk"
+Sraw <- jsonlite::fromJSON(SAPI)
+```
+
+Find riskfree rate r
+```{r}
+#Fetch Treasury bond yields from FRED (Federal Reserve Economic Data)
+getSymbols("DGS3MO", src = "FRED", from = "2022-10-11", to = "2022-11-03")
+
+
+#Extract data
+treasury_yield <- DGS3MO[, "DGS3MO"]
+
+#Calculate risk-free rate as the 10-year Treasury bond yield
+risk_free_rate <- tail(treasury_yield, 1) / 100
+
+print(risk_free_rate)
+r <- 0.0425
+```
+
+```{r}
+S <- Sraw$results$c
+t <- Sraw$results$t
+S0 <- data.frame(S,t)
+```
+
+```{r}
+for (i in 1:length(call$X)) {
+  call[i,1] <- r
+}
+
+names(call)[1] <- "r"
+```
+
+```{r}
+FULLdf <- left_join(call, S0, by = "t")
+```
+
+
+```{r}
+write.csv(FULLdf, "Data_w_S_and_r.csv")
+```
+
