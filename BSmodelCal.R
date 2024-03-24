@@ -9,6 +9,7 @@ type = "call"
 P <- read.csv("/Users/christiantaulbjerg/Documents/GitHub/F2024/closeP-Apple.csv")
 call <- read.csv("/Users/christiantaulbjerg/Documents/GitHub/F2024/CallApple.csv")
 callPR <- read.csv("/Users/christiantaulbjerg/Documents/GitHub/F2024/Data_w_S_and_r.csv")
+
 # Function to calculate Black-Scholes price
 bs_price <- function(sigma, S, K, T, r, option_type) {
   price <- EuropeanOption(type = option_type, underlying = S, strike = K, 
@@ -27,8 +28,9 @@ error_function <- function(sigma, observed_price, S, K, T, r, option_type) {
 
 
 
-model_price <- bs_price(0.0, 144.95, 140, T, 0.4, "call")
-model_price$value
+
+#bs_price(-0.0566, 138.88, 165, 0.2, 0.425, "call")
+
 # Load your dataset
 # Let's assume your dataset is stored in 'options_data' dataframe
 # It contains columns: S0, K, T, r, observed_price, option_type
@@ -37,6 +39,10 @@ model_price$value
 calibrated_volatilities <- numeric(0)
 
 
+  
+
+totaltid <-callPR[nrow(callPR),3] - callPR[1,3]
+
 
 # Iterate over each row of the dataset
 for (i in 1:nrow(callPR)) {
@@ -44,10 +50,10 @@ for (i in 1:nrow(callPR)) {
     if (!is.na(callPR[i,j])) {
       S <- callPR[i,ncol(callPR)]
       K <- as.numeric(gsub("\\D", "", colnames(callPR[j]) ))
-      T <- 0.25
+      T <- 0.25*(1-(callPR[i,3]-callPR[1,3])/totaltid)
       r <- 0.0425
       obs_price <- callPR[i,j]
-      vol_0 <- 0.3
+      vol_0 <- 0.1
       calib_vol <- optim(vol_0, error_function, 
                          observed_price = obs_price, 
                          S = S, K = K, T = T, r = r, 
@@ -57,4 +63,6 @@ for (i in 1:nrow(callPR)) {
   }
 }
 
-calibrated_volatilities
+
+mean(abs(calibrated_volatilities))
+
