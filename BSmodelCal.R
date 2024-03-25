@@ -68,7 +68,6 @@ mean(abs(calibrated_volatilities))
 
 min(calibrated_volatilities)
 
-
 #AAPL221104C00
 
 #first day 4 oktober 2022

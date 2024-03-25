@@ -105,3 +105,13 @@ FULLdf <- left_join(call, S0, by = "t")
 write.csv(FULLdf, "Data_w_S_and_r.csv")
 ```
 
+```{r}
+for (i in 1:length(FULLdf$t)) {
+  FULLdf[i,2] <- (FULLdf[i,2] - 1664890200000)/60000
+}
+```
+
+```{r}
+write.csv(FULLdf, "Data_t_in_min.csv")
+```
+
