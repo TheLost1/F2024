@@ -6,9 +6,11 @@ r = 0.04
 type = "call"
 
 #load data
-P <- read.csv("/Users/christiantaulbjerg/Documents/GitHub/F2024/closeP-Apple.csv")
-call <- read.csv("/Users/christiantaulbjerg/Documents/GitHub/F2024/CallApple.csv")
-callPR <- read.csv("/Users/christiantaulbjerg/Documents/GitHub/F2024/Data_w_S_and_r.csv")
+#P <- read.csv("/Users/christiantaulbjerg/Documents/GitHub/F2024/closeP-Apple.csv")
+#call <- read.csv("/Users/christiantaulbjerg/Documents/GitHub/F2024/CallApple.csv")
+#callPR <- read.csv("/Users/christiantaulbjerg/Documents/GitHub/F2024/Data_w_S_and_r.csv")
+
+callPR <- read.csv("C:\\Users\\Bruger\\Desktop\\F2024\\Data_w_S_and_r.csv")
 
 # Function to calculate Black-Scholes price
 bs_price <- function(sigma, S, K, T, r, option_type) {
@@ -74,6 +76,27 @@ min(calibrated_volatilities)
 
 #last day 3 november 2022
 
-# T = 4 novemeber
+# T = 4 novemeber 2022
+
+for (i in 1:nrow(callPR)) {
+  for (j in 4:(ncol(callPR)-1)){
+    if (!is.na(callPR[i,j])) {
+      S <- callPR[i,ncol(callPR)]
+      K <- as.numeric(gsub("\\D", "", colnames(callPR[j]) ))
+      T <- (1/12)*(1-(callPR[i,3]-callPR[1,3])/totaltid)
+      r <- 0.0425
+      sigma <- mean(abs(calibrated_volatilities))
+      BSres <- (bs_price(sigma = sigma, S = S, K= K, T = T, r = r, option_type="call"))
+    }
+  }
+}
+View(BSres$value)
 
 
+
+S <- callPR[i,ncol(callPR)]
+K <- as.numeric(gsub("\\D", "", colnames(callPR[j]) ))
+T <- (1/12)*(1-(callPR[i,3]-callPR[1,3])/totaltid)
+r <- 0.0425
+sigma <- mean(abs(calibrated_volatilities))
+bs_price(sigma = sigma, S=138.88, K=165, T=0.1, r=0.425, "call")
