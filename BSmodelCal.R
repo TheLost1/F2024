@@ -50,7 +50,7 @@ for (i in 1:nrow(callPR)) {
     if (!is.na(callPR[i,j])) {
       S <- callPR[i,ncol(callPR)]
       K <- as.numeric(gsub("\\D", "", colnames(callPR[j]) ))
-      T <- 0.25*(1-(callPR[i,3]-callPR[1,3])/totaltid)
+      T <- (1/12)*(1-(callPR[i,3]-callPR[1,3])/totaltid)
       r <- 0.0425
       obs_price <- callPR[i,j]
       vol_0 <- 0.1
@@ -65,4 +65,16 @@ for (i in 1:nrow(callPR)) {
 
 
 mean(abs(calibrated_volatilities))
+
+min(calibrated_volatilities)
+
+
+#AAPL221104C00
+
+#first day 4 oktober 2022
+
+#last day 3 november 2022
+
+# T = 4 novemeber
+
 
